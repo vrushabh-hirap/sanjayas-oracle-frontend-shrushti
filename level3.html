@@ -20,9 +20,9 @@
     <div class="card-header">
         <div class="card-title">Gate III &mdash; Letter by Letter</div>
         <div class="card-lore">
-            "The name has a measurable length. Now pry each character out of the
-            archive &mdash; one position at a time &mdash; using the query itself.
-            Reassemble the name, then speak it here."
+            "Eight characters. Each must travel its own road &mdash; a separate outbound
+            lookup for every position. The listener will receive them one by one.
+            Reassemble the name from what it reports, then speak it here."
         </div>
     </div>
 
@@ -51,7 +51,7 @@
                         type="text"
                         class="form-input"
                         id="search3"
-                        placeholder="Inject per-position payload&hellip;"
+                        placeholder="Inject per-position OOB payload&hellip;"
                         spellcheck="false"
                         autocomplete="off"
                         style="flex:1; min-width:200px;"
@@ -79,7 +79,7 @@
 
                 <div id="search-feedback" style="display:none;">
                     <div class="oob-notice fade-in">
-                        &mdash; No rows. No errors. The archive yields only to the query. &mdash;
+                        &mdash; No rows. No errors. Check pos1&ndash;pos8 on your listener. &mdash;
                     </div>
                 </div>
             </div>
@@ -90,8 +90,8 @@
             <div class="claim-box">
                 <div class="claim-title">&#x2694; Submit the Reconstructed Name</div>
                 <div class="claim-lore">
-                    "The archive hides eight characters across its record. Extract each
-                    one through the query, read them in order, and enter the full name below."
+                    "Your listener received eight subdomains &mdash; pos1 through pos8 &mdash; each
+                    carrying one character. Read them in order and enter the full name below."
                 </div>
                 <form id="name-form" autocomplete="off">
                     <div class="claim-inline">
@@ -99,7 +99,7 @@
                             type="text"
                             class="form-input"
                             id="reconstructed-name"
-                            placeholder="Reconstructed name from your extraction"
+                            placeholder="Reconstructed name from listener logs"
                             spellcheck="false"
                             autocomplete="off"
                         >
@@ -167,7 +167,7 @@ document.addEventListener('DOMContentLoaded', function() {
             } else {
                 alertContainer.innerHTML = '<div class="alert alert-error fade-in">' +
                     '<span class="alert-icon">&#x2716;</span>' +
-                    'The letters do not form the true name. Return to your extraction.' +
+                    'The letters do not form the true name. Return to your listener logs.' +
                     '</div>';
             }
         }).catch(function() {

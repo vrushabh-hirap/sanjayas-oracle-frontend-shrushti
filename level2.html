@@ -20,9 +20,9 @@
     <div class="card-header">
         <div class="card-title">Gate II &mdash; The Name's Length</div>
         <div class="card-lore">
-            "The truth is still beyond sight. But before a name can be spoken,
-            its measure must be taken. Prove the length of what the archive hides
-            &mdash; not here, but through the query itself."
+            "The truth is still beyond sight. But before a name can travel a hidden road,
+            its measure must be taken. Send a payload that forces the archive to whisper
+            the length of what it hides &mdash; not here, but to the place you have prepared."
         </div>
     </div>
 
@@ -51,7 +51,7 @@
                         type="text"
                         class="form-input"
                         id="search2"
-                        placeholder="Inject your payload here&hellip;"
+                        placeholder="Inject your OOB payload here&hellip;"
                         spellcheck="false"
                         autocomplete="off"
                         style="flex:1; min-width:200px;"
@@ -79,7 +79,7 @@
 
                 <div id="search-feedback" style="display:none;">
                     <div class="oob-notice fade-in">
-                        &mdash; The Oracle remains silent. Try another door. &mdash;
+                        &mdash; The Oracle remains silent. Check your listener, not this door. &mdash;
                     </div>
                 </div>
             </div>
@@ -90,9 +90,9 @@
             <div class="claim-box">
                 <div class="claim-title">&#x2694; Submit the Name's Length</div>
                 <div class="claim-lore">
-                    "The archive computes the length of what it hides &mdash; you must
-                    force it out through the query. Read the number you extracted,
-                    then enter it below to claim Gate II's seal."
+                    "Your listener received a subdomain &mdash; it carries the length
+                    encoded within it. Read it, and enter the number below to claim
+                    Gate II's seal."
                 </div>
                 <form id="length-form" autocomplete="off">
                     <div class="claim-inline">
@@ -170,7 +170,7 @@ document.addEventListener('DOMContentLoaded', function() {
             } else {
                 alertContainer.innerHTML = '<div class="alert alert-error fade-in">' +
                     '<span class="alert-icon">&#x2716;</span>' +
-                    'That length does not match what the archive holds. Check your extraction.' +
+                    'That length does not match what the archive holds. Check your listener logs.' +
                     '</div>';
             }
         }).catch(function() {

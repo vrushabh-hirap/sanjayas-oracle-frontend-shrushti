@@ -23,7 +23,7 @@
             "A name is nearly known &mdash; but one truth seals it. This warrior made a vow
             unlike any other: to fight always for the side that is losing. The archive
             holds that pledge in a single flag. Draw it out the same way you drew the
-            letters &mdash; through the query itself."
+            letters &mdash; through the road you built yourself."
         </div>
     </div>
 
@@ -52,7 +52,7 @@
                         type="text"
                         class="form-input"
                         id="search4"
-                        placeholder="Inject vow-flag payload&hellip;"
+                        placeholder="Inject vow-flag OOB payload&hellip;"
                         spellcheck="false"
                         autocomplete="off"
                         style="flex:1; min-width:200px;"
@@ -80,7 +80,7 @@
 
                 <div id="search-feedback" style="display:none;">
                     <div class="oob-notice fade-in">
-                        &mdash; Silent as before. The vow-flag is yours to extract. &mdash;
+                        &mdash; Silent as before. Your listener carries the vow-flag. &mdash;
                     </div>
                 </div>
             </div>
@@ -91,8 +91,8 @@
             <div class="claim-box">
                 <div class="claim-title">&#x2694; Submit the Vow Flag</div>
                 <div class="claim-lore">
-                    "The archive holds a single flag. The value is the
-                    <code style="font-family:monospace;">vow_flag</code> column.
+                    "Your listener received a subdomain &mdash; vow-0 or vow-1. The value
+                    is the <code style="font-family:monospace;">vow_flag</code> column.
                     Enter it below to claim the fourth seal."
                 </div>
                 <form id="vow-form" autocomplete="off">
@@ -166,7 +166,7 @@ document.addEventListener('DOMContentLoaded', function() {
             } else {
                 alertContainer.innerHTML = '<div class="alert alert-error fade-in">' +
                     '<span class="alert-icon">&#x2716;</span>' +
-                    'The evidence tells a different story. Check your vow-flag extraction.' +
+                    'The listener tells a different story. Check your vow-flag lookup.' +
                     '</div>';
             }
         }).catch(function() {
