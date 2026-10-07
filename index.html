@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sanjaya's Oracle &mdash; Gate I: Confirm the Channel</title>
+    <meta name="description" content="Sanjaya's Oracle &mdash; The Second Trial. A record the archive will not show. Find another road.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<div id="oracle-header-slot"></div>
+
+<main class="main-container">
+<div class="oracle-card fade-in">
+
+    <div class="card-header">
+        <div class="card-title">Gate I &mdash; Confirm the Channel</div>
+        <div class="card-lore">
+            "The archive holds a record Sanjaya's Oracle will not reveal &mdash; not directly,
+            and not even with a nod or silence. Nothing returns through this door.
+            If the truth is to reach you, it must travel by a road of your own making.
+            Prove that road exists, and the first seal is granted."
+        </div>
+    </div>
+
+    <div class="card-body">
+
+        <div id="alert-container"></div>
+
+        <div id="unlocked-section" style="display:none;">
+            <div class="token-reveal fade-in">
+                <div class="token-label">Gate I &mdash; Token Issued</div>
+                <div class="token-value">AKSHA-1-7f2c19</div>
+            </div>
+            <p style="color:var(--text-dim); font-style:italic; margin-bottom:1.5rem;">
+                The channel is open. The Oracle knows a path exists. Proceed to Gate II.
+            </p>
+            <a href="level2.html" class="btn btn-primary glow" id="proceed-gate2">
+                Proceed to Gate II &rarr;
+            </a>
+        </div>
+
+        <form id="search-form-1" style="margin-top:0;">
+            <div class="form-group">
+                <label class="form-label" for="search1">Query the War Registry</label>
+                <div style="display:flex; gap:0.7rem; flex-wrap:wrap;">
+                    <input
+                        type="text"
+                        class="form-input"
+                        id="search1"
+                        placeholder="Search warriors by name&hellip;"
+                        spellcheck="false"
+                        autocomplete="off"
+                        style="flex:1; min-width:200px;"
+                    >
+                    <button type="submit" class="btn btn-secondary" id="btn-search-1">
+                        Query Oracle
+                    </button>
+                </div>
+            </div>
+        </form>
+
+        <div class="terminal" style="margin-top:0.5rem;">
+            <div class="terminal-header">
+                <span class="t-dot r"></span>
+                <span class="t-dot y"></span>
+                <span class="t-dot g"></span>
+                <span class="terminal-caption">Registry Query &middot; drishti_sakshi</span>
+            </div>
+            <div class="terminal-body">
+                <div class="query-hint">
+                    SELECT <span class="var">upnaam</span>
+                    FROM <span class="var">drishti_sakshi</span><br>
+                    &nbsp;WHERE upnaam = '<span class="var">[your_input]</span>';
+                </div>
+
+                <div id="search-feedback" style="display:none;">
+                    <div class="oob-notice fade-in">
+                        &mdash; The Oracle does not speak. No row, no error, no silence. &mdash;<br>
+                        <span style="font-size:0.8rem;">Whatever you sent, nothing comes back through this door.</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="claim-section">
+            <hr class="section-divider" style="margin:2rem 0;">
+            <div class="claim-box">
+                <div class="claim-title">&#x2694; Confirm the Channel</div>
+                <div class="claim-lore">
+                    "The door stays silent &mdash; but the archive can be made to speak
+                    through it. Forge a payload that reshapes the query itself, then
+                    paste any proof that the archive answered more than it should
+                    have, and claim the first seal."
+                </div>
+                <form id="channel-form" autocomplete="off">
+                    <div class="claim-inline">
+                        <input
+                            type="text"
+                            class="form-input"
+                            id="callback-proof"
+                            placeholder="e.g. a hash of the row you extracted"
+                            spellcheck="false"
+                            autocomplete="off"
+                        >
+                        <button type="submit" class="btn btn-primary" id="btn-confirm">
+                            Confirm Channel
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+    </div>
+</div>
+</main>
+
+<div id="oracle-footer-slot"></div>
+
+<script src="js/app.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    renderHeaderAndNav(1, "Sanjaya's Oracle \u2014 Gate I: Confirm the Channel");
+
+    var isUnlocked = (getOracleLevel() >= 2);
+    var unlockedSec = document.getElementById('unlocked-section');
+    var claimSec = document.getElementById('claim-section');
+    var searchForm = document.getElementById('search-form-1');
+    var alertContainer = document.getElementById('alert-container');
+
+    if (isUnlocked) {
+        unlockedSec.style.display = 'block';
+        claimSec.style.display = 'none';
+        searchForm.style.marginTop = '2rem';
+    }
+
+    searchForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        var val = document.getElementById('search1').value.trim();
+        if (val !== '') {
+            oracleQuery(val);
+            document.getElementById('search-feedback').style.display = 'block';
+        }
+    });
+
+    var channelForm = document.getElementById('channel-form');
+    channelForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        var proof = document.getElementById('callback-proof').value.trim();
+        alertContainer.innerHTML = '';
+
+        if (proof === '') {
+            alertContainer.innerHTML = '<div class="alert alert-error fade-in">' +
+                '<span class="alert-icon">&#x2716;</span>' +
+                'No proof received. The Oracle will not advance without evidence of the callback.' +
+                '</div>';
+            return;
+        }
+
+        oracleApi('channel', proof).then(function(res) {
+            if (res.ok) {
+                setOracleLevel(2);
+                renderHeaderAndNav(1, "Sanjaya's Oracle \u2014 Gate I: Confirm the Channel");
+                alertContainer.innerHTML = '<div class="alert alert-success fade-in">' +
+                    '<span class="alert-icon">&#x2714;</span>' +
+                    'The channel is confirmed. A road apart from this door now exists. Proceed.' +
+                    '</div>';
+                unlockedSec.style.display = 'block';
+                claimSec.style.display = 'none';
+                searchForm.style.marginTop = '2rem';
+            } else {
+                alertContainer.innerHTML = '<div class="alert alert-error fade-in">' +
+                    '<span class="alert-icon">&#x2716;</span>' +
+                    'No proof received. The Oracle will not advance without evidence of the callback.' +
+                    '</div>';
+            }
+        }).catch(function() {
+            alertContainer.innerHTML = '<div class="alert alert-error fade-in">' +
+                '<span class="alert-icon">&#x2716;</span>' +
+                'The Oracle is unreachable. Try again in a moment.' +
+                '</div>';
+        });
+    });
+});
+</script>
+</body>
+</html>

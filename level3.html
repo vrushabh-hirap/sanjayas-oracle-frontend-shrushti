@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sanjaya's Oracle &mdash; Gate III: Letter by Letter</title>
+    <meta name="description" content="Sanjaya's Oracle &mdash; The Second Trial. A record the archive will not show. Find another road.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<div id="oracle-header-slot"></div>
+
+<main class="main-container">
+<div class="oracle-card fade-in">
+
+    <div class="card-header">
+        <div class="card-title">Gate III &mdash; Letter by Letter</div>
+        <div class="card-lore">
+            "The name has a measurable length. Now pry each character out of the
+            archive &mdash; one position at a time &mdash; using the query itself.
+            Reassemble the name, then speak it here."
+        </div>
+    </div>
+
+    <div class="card-body">
+
+        <div id="alert-container"></div>
+
+        <div id="unlocked-section" style="display:none;">
+            <div class="token-reveal fade-in">
+                <div class="token-label">Gate III &mdash; Token Issued</div>
+                <div class="token-value">AKSHA-3-9b1f57</div>
+            </div>
+            <p style="color:var(--text-dim); font-style:italic; margin-bottom:1.5rem;">
+                The name is reconstructed. One truth remains &mdash; the warrior's vow.
+            </p>
+            <a href="level4.html" class="btn btn-primary glow" id="proceed-gate4">
+                Proceed to Gate IV &rarr;
+            </a>
+        </div>
+
+        <form id="search-form-3" style="margin-top:0;">
+            <div class="form-group">
+                <label class="form-label" for="search3">Query the War Registry</label>
+                <div style="display:flex; gap:0.7rem; flex-wrap:wrap;">
+                    <input
+                        type="text"
+                        class="form-input"
+                        id="search3"
+                        placeholder="Inject per-position payload&hellip;"
+                        spellcheck="false"
+                        autocomplete="off"
+                        style="flex:1; min-width:200px;"
+                    >
+                    <button type="submit" class="btn btn-secondary" id="btn-search-3">
+                        Query Oracle
+                    </button>
+                </div>
+            </div>
+        </form>
+
+        <div class="terminal" style="margin-top:0.5rem;">
+            <div class="terminal-header">
+                <span class="t-dot r"></span>
+                <span class="t-dot y"></span>
+                <span class="t-dot g"></span>
+                <span class="terminal-caption">Registry Query &middot; drishti_sakshi &middot; 1 column</span>
+            </div>
+            <div class="terminal-body">
+                <div class="query-hint">
+                    SELECT <span class="var">upnaam</span>
+                    FROM <span class="var">drishti_sakshi</span><br>
+                    &nbsp;WHERE upnaam = '<span class="var">[your_input]</span>';
+                </div>
+
+                <div id="search-feedback" style="display:none;">
+                    <div class="oob-notice fade-in">
+                        &mdash; No rows. No errors. The archive yields only to the query. &mdash;
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="claim-section">
+            <hr class="section-divider" style="margin:2rem 0;">
+            <div class="claim-box">
+                <div class="claim-title">&#x2694; Submit the Reconstructed Name</div>
+                <div class="claim-lore">
+                    "The archive hides eight characters across its record. Extract each
+                    one through the query, read them in order, and enter the full name below."
+                </div>
+                <form id="name-form" autocomplete="off">
+                    <div class="claim-inline">
+                        <input
+                            type="text"
+                            class="form-input"
+                            id="reconstructed-name"
+                            placeholder="Reconstructed name from your extraction"
+                            spellcheck="false"
+                            autocomplete="off"
+                        >
+                        <button type="submit" class="btn btn-primary" id="btn-submit-name">
+                            Confirm Name
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+    </div>
+</div>
+</main>
+
+<div id="oracle-footer-slot"></div>
+
+<script src="js/app.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    if (!verifyGateAccess(3)) {
+        return;
+    }
+
+    renderHeaderAndNav(3, "Sanjaya's Oracle \u2014 Gate III: Letter by Letter");
+
+    var isUnlocked = (getOracleLevel() >= 4);
+    var unlockedSec = document.getElementById('unlocked-section');
+    var claimSec = document.getElementById('claim-section');
+    var searchForm = document.getElementById('search-form-3');
+    var alertContainer = document.getElementById('alert-container');
+
+    if (isUnlocked) {
+        unlockedSec.style.display = 'block';
+        claimSec.style.display = 'none';
+        searchForm.style.marginTop = '2rem';
+    }
+
+    searchForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        var val = document.getElementById('search3').value.trim();
+        if (val !== '') {
+            oracleQuery(val);
+            document.getElementById('search-feedback').style.display = 'block';
+        }
+    });
+
+    var nameForm = document.getElementById('name-form');
+    nameForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        var raw = document.getElementById('reconstructed-name').value.trim().toLowerCase();
+        alertContainer.innerHTML = '';
+
+        oracleApi('name', raw).then(function(res) {
+            if (res.ok) {
+                setOracleLevel(4);
+                renderHeaderAndNav(3, "Sanjaya's Oracle \u2014 Gate III: Letter by Letter");
+                alertContainer.innerHTML = '<div class="alert alert-success fade-in">' +
+                    '<span class="alert-icon">&#x2714;</span>' +
+                    'The name is assembled. The archive concedes. Proceed to Gate IV.' +
+                    '</div>';
+                unlockedSec.style.display = 'block';
+                claimSec.style.display = 'none';
+                searchForm.style.marginTop = '2rem';
+            } else {
+                alertContainer.innerHTML = '<div class="alert alert-error fade-in">' +
+                    '<span class="alert-icon">&#x2716;</span>' +
+                    'The letters do not form the true name. Return to your extraction.' +
+                    '</div>';
+            }
+        }).catch(function() {
+            alertContainer.innerHTML = '<div class="alert alert-error fade-in">' +
+                '<span class="alert-icon">&#x2716;</span>' +
+                'The Oracle is unreachable. Try again in a moment.' +
+                '</div>';
+        });
+    });
+});
+</script>
+</body>
+</html>

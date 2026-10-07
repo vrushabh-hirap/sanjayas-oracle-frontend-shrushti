@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sanjaya's Oracle &mdash; Gate IV: The Vow</title>
+    <meta name="description" content="Sanjaya's Oracle &mdash; The Second Trial. A record the archive will not show. Find another road.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<div id="oracle-header-slot"></div>
+
+<main class="main-container">
+<div class="oracle-card fade-in">
+
+    <div class="card-header">
+        <div class="card-title">Gate IV &mdash; The Warrior's Vow</div>
+        <div class="card-lore">
+            "A name is nearly known &mdash; but one truth seals it. This warrior made a vow
+            unlike any other: to fight always for the side that is losing. The archive
+            holds that pledge in a single flag. Draw it out the same way you drew the
+            letters &mdash; through the query itself."
+        </div>
+    </div>
+
+    <div class="card-body">
+
+        <div id="alert-container"></div>
+
+        <div id="unlocked-section" style="display:none;">
+            <div class="token-reveal fade-in">
+                <div class="token-label">Gate IV &mdash; Token Issued</div>
+                <div class="token-value">AKSHA-4-c3a02f</div>
+            </div>
+            <p style="color:var(--text-dim); font-style:italic; margin-bottom:1.5rem;">
+                The vow is known. Speak the warrior's name at the final gate.
+            </p>
+            <a href="level5.html" class="btn btn-primary glow" id="proceed-gate5">
+                Proceed to Gate V &rarr;
+            </a>
+        </div>
+
+        <form id="search-form-4" style="margin-top:0;">
+            <div class="form-group">
+                <label class="form-label" for="search4">Query the War Registry</label>
+                <div style="display:flex; gap:0.7rem; flex-wrap:wrap;">
+                    <input
+                        type="text"
+                        class="form-input"
+                        id="search4"
+                        placeholder="Inject vow-flag payload&hellip;"
+                        spellcheck="false"
+                        autocomplete="off"
+                        style="flex:1; min-width:200px;"
+                    >
+                    <button type="submit" class="btn btn-secondary" id="btn-search-4">
+                        Query Oracle
+                    </button>
+                </div>
+            </div>
+        </form>
+
+        <div class="terminal" style="margin-top:0.5rem;">
+            <div class="terminal-header">
+                <span class="t-dot r"></span>
+                <span class="t-dot y"></span>
+                <span class="t-dot g"></span>
+                <span class="terminal-caption">Registry Query &middot; drishti_sakshi &middot; vow_flag column</span>
+            </div>
+            <div class="terminal-body">
+                <div class="query-hint">
+                    SELECT <span class="var">upnaam</span>
+                    FROM <span class="var">drishti_sakshi</span><br>
+                    &nbsp;WHERE upnaam = '<span class="var">[your_input]</span>';
+                </div>
+
+                <div id="search-feedback" style="display:none;">
+                    <div class="oob-notice fade-in">
+                        &mdash; Silent as before. The vow-flag is yours to extract. &mdash;
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="claim-section">
+            <hr class="section-divider" style="margin:2rem 0;">
+            <div class="claim-box">
+                <div class="claim-title">&#x2694; Submit the Vow Flag</div>
+                <div class="claim-lore">
+                    "The archive holds a single flag. The value is the
+                    <code style="font-family:monospace;">vow_flag</code> column.
+                    Enter it below to claim the fourth seal."
+                </div>
+                <form id="vow-form" autocomplete="off">
+                    <div class="claim-inline">
+                        <select id="vow-flag" class="form-input" style="max-width:160px;">
+                            <option value="" disabled selected>Select flag&hellip;</option>
+                            <option value="0">0 &mdash; does not apply</option>
+                            <option value="1">1 &mdash; vow holds true</option>
+                        </select>
+                        <button type="submit" class="btn btn-primary" id="btn-submit-vow">
+                            Confirm Vow
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+    </div>
+</div>
+</main>
+
+<div id="oracle-footer-slot"></div>
+
+<script src="js/app.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    if (!verifyGateAccess(4)) {
+        return;
+    }
+
+    renderHeaderAndNav(4, "Sanjaya's Oracle \u2014 Gate IV: The Vow");
+
+    var isUnlocked = (getOracleLevel() >= 5);
+    var unlockedSec = document.getElementById('unlocked-section');
+    var claimSec = document.getElementById('claim-section');
+    var searchForm = document.getElementById('search-form-4');
+    var alertContainer = document.getElementById('alert-container');
+
+    if (isUnlocked) {
+        unlockedSec.style.display = 'block';
+        claimSec.style.display = 'none';
+        searchForm.style.marginTop = '2rem';
+    }
+
+    searchForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        var val = document.getElementById('search4').value.trim();
+        if (val !== '') {
+            oracleQuery(val);
+            document.getElementById('search-feedback').style.display = 'block';
+        }
+    });
+
+    var vowForm = document.getElementById('vow-form');
+    vowForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        var val = parseInt(document.getElementById('vow-flag').value, 10);
+        alertContainer.innerHTML = '';
+
+        oracleApi('vow', val).then(function(res) {
+            if (res.ok) {
+                setOracleLevel(5);
+                renderHeaderAndNav(4, "Sanjaya's Oracle \u2014 Gate IV: The Vow");
+                alertContainer.innerHTML = '<div class="alert alert-success fade-in">' +
+                    '<span class="alert-icon">&#x2714;</span>' +
+                    'The vow is confirmed. The warrior pledged to the losing side. Gate V is open.' +
+                    '</div>';
+                unlockedSec.style.display = 'block';
+                claimSec.style.display = 'none';
+                searchForm.style.marginTop = '2rem';
+            } else {
+                alertContainer.innerHTML = '<div class="alert alert-error fade-in">' +
+                    '<span class="alert-icon">&#x2716;</span>' +
+                    'The evidence tells a different story. Check your vow-flag extraction.' +
+                    '</div>';
+            }
+        }).catch(function() {
+            alertContainer.innerHTML = '<div class="alert alert-error fade-in">' +
+                '<span class="alert-icon">&#x2716;</span>' +
+                'The Oracle is unreachable. Try again in a moment.' +
+                '</div>';
+        });
+    });
+});
+</script>
+</body>
+</html>

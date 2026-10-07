@@ -1,0 +1,29 @@
+{
+  "cleanUrls": true,
+  "rewrites": [
+    {
+      "source": "/api/:path*",
+      "destination": "https://sanjayas-oracle-backend-shrushti.onrender.com/api/:path*"
+    },
+    {
+      "source": "/level2.php",
+      "destination": "/level2.html"
+    },
+    {
+      "source": "/level3.php",
+      "destination": "/level3.html"
+    },
+    {
+      "source": "/level4.php",
+      "destination": "/level4.html"
+    },
+    {
+      "source": "/level5.php",
+      "destination": "/level5.html"
+    },
+    {
+      "source": "/index.php",
+      "destination": "/index.html"
+    }
+  ]
+}
